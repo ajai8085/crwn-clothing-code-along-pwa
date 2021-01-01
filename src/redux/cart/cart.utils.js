@@ -12,9 +12,11 @@ export const addItemToCart = (cartItems, cartItemToAdd) => {
 export const removeItemFormCart = (cartItems, id) => {
   const existingCartItem = cartItems.find((it) => it.id === id);
   if (existingCartItem) {
-    return cartItems.map((it) =>
-      it.id === id ? { ...it, quantity: it.quantity - 1 } : it
-    );
+    if (existingCartItem.quantity > 1) {
+      existingCartItem.quantity = existingCartItem.quantity - 1;
+    } else {
+      return [...cartItems.filter((it) => it.id !== id)];
+    }
   }
   return [...cartItems];
 };
