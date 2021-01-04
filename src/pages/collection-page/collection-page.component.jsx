@@ -1,15 +1,28 @@
 import './collection-page.style.scss';
 import { connect } from 'react-redux';
-import { selectCollection } from '../../redux/shop/shop.selectors';
-// import { createStructuredSelector } from 'reselect';
-const CollectionPage = ({ collection, match }) => {
-  console.log(collection);
+import { selectCollectionItemsBySection } from '../../redux/shop/shop.selectors';
+import CollectionItem from '../../Components/collection-item/collection-item.component';
 
-  return <div className="collection-page">collection page</div>;
+// import { createStructuredSelector } from 'reselect';
+const CollectionPage = ({ collection }) => {
+  const { title, items } = collection;
+
+  return (
+    <div className="collection-page">
+      <div className="title">{title}</div>
+      <div className="items">
+        {items.map((item) => (
+          <CollectionItem key={item.id} item={item} />
+        ))}
+      </div>
+    </div>
+  );
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  collection: selectCollection(ownProps.match.params.collectionId)(state),
+  collection: selectCollectionItemsBySection(
+    ownProps.match.params.collectionId
+  )(state),
 });
 
 // createStructuredSelector({ data: selectCollection });
