@@ -5,7 +5,7 @@ const selectShopData = (state) => state.shop;
 
 export const selectCollections = createSelector(
   [selectShopData],
-  (d) => d.collection
+  (d) => d.collections
 );
 
 // export const selectCollection = memoize((collectionUrlParam) =>
@@ -22,4 +22,14 @@ export const selectCollectionsForPreview = createSelector(
 
 export const selectCollectionItemsBySection = memoize((collectionUrlParam) =>
   createSelector([selectCollections], (d) => (d ? d[collectionUrlParam] : null))
+);
+
+export const selectIsCollectionFetching = createSelector(
+  [selectShopData],
+  (shop) => shop.isFetching
+);
+
+export const isLoadingData = createSelector(
+  [selectShopData],
+  (selectShopData) => (selectShopData.collections ? false : true)
 );
