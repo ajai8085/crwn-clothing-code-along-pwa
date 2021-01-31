@@ -4,12 +4,7 @@ import {
   auth,
   createUserProfileDocument,
 } from '../../firebase/firebase.utils';
-import {
-  googleSignInFailure,
-  googleSignInSuccess,
-  emailSignInFailure,
-  emailSignSuccess,
-} from './user.actions';
+import { signInFailure, signInSuccess } from './user.actions';
 import UserActionTypes from './user.types';
 
 export function* signInWithGoogle() {
@@ -19,11 +14,9 @@ export function* signInWithGoogle() {
     const userRef = yield call(createUserProfileDocument, user);
     const userSnapshopt = yield userRef.get();
 
-    yield put(
-      googleSignInSuccess({ id: userSnapshopt.id, ...userSnapshopt.data() })
-    );
+    yield put(signInSuccess({ id: userSnapshopt.id, ...userSnapshopt.data() }));
   } catch (exception) {
-    yield put(googleSignInFailure(exception.message));
+    yield put(signInFailure(exception.message));
   }
 }
 export function* onGoogleSigninStart() {
@@ -36,11 +29,9 @@ export function* signInWithEmail({ payload: { email, password } }) {
     const userRef = yield call(createUserProfileDocument, user);
     const userSnapshopt = yield userRef.get();
 
-    yield put(
-      emailSignSuccess({ id: userSnapshopt.id, ...userSnapshopt.data() })
-    );
+    yield put(signInSuccess({ id: userSnapshopt.id, ...userSnapshopt.data() }));
   } catch (exception) {
-    yield put(emailSignInFailure(exception.message));
+    yield put(signInFailure(exception.message));
   }
 }
 
