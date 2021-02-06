@@ -8,11 +8,15 @@ import Header from './Components/header/header.component';
 import SignInAndSignUpPage from './pages/sign-in-sign-up/sign-in-sign-up.component';
 import { connect } from 'react-redux';
 
-import { selectCurrentUser } from './redux/user/user.selectors';
 import { createStructuredSelector } from 'reselect';
+import { checkUserSession } from './redux/user/user.actions';
 
 // import { selectCollectionsForPreview } from './redux/shop/shop.selectors';
 class App extends React.Component {
+  componentDidMount() {
+    const { checkUserSession } = this.props;
+    checkUserSession();
+  }
   render() {
     return (
       <div>
@@ -39,11 +43,10 @@ class App extends React.Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser,
   // collectionsArray: selectCollectionsForPreview,
 });
 const mapDispacthToProperties = (dispatch) => ({
-  //setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+  checkUserSession: () => dispatch(checkUserSession()),
 });
 
 export default connect(mapStateToProps, mapDispacthToProperties)(App);
