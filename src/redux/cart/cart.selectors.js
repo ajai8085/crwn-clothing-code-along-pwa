@@ -1,35 +1,33 @@
 import { createSelector } from 'reselect';
 
-// npm install reselect
-// get the state and retur the slice of the state and memorize it , this will prevent un-necessary re-rendering
-
-//follwoing are the selectors for selecting the data slice
-export const selectCart = (state) => state.cart;
+const selectCart = state => state.cart;
 
 export const selectCartItems = createSelector(
-  selectCart,
-  (cart) => cart.cartItems
+  [selectCart],
+  cart => cart.cartItems
 );
 
 export const selectCartHidden = createSelector(
   [selectCart],
-  (cart) => cart.hidden
+  cart => cart.hidden
 );
 
-export const selectCartItemCount = createSelector(
+export const selectCartItemsCount = createSelector(
   [selectCartItems],
-  (cartitems) =>
-    cartitems.reduce(
-      (accumulated, cartItem) =>
-        (accumulated = accumulated + cartItem.quantity),
+  cartItems =>
+    cartItems.reduce(
+      (accumalatedQuantity, cartItem) =>
+        accumalatedQuantity + cartItem.quantity,
       0
     )
 );
 
-export const selectCartTotal = createSelector([selectCartItems], (cartitems) =>
-  cartitems.reduce(
-    (accumulated, cartItem) =>
-      (accumulated = accumulated + cartItem.price * cartItem.quantity),
-    0
-  )
+export const selectCartTotal = createSelector(
+  [selectCartItems],
+  cartItems =>
+    cartItems.reduce(
+      (accumalatedQuantity, cartItem) =>
+        accumalatedQuantity + cartItem.quantity * cartItem.price,
+      0
+    )
 );
